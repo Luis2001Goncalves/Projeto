@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/Luis2001Goncalves/Projeto.git' // Substitua pelo URL do seu repositório Git
+                git branch: 'main', url: 'https://github.com/Luis2001Goncalves/Projeto.git' // Substitua pelo URL do seu repositório Git
             }
         }
         stage('Build Docker Image') {
