@@ -3,14 +3,14 @@ pipeline {
 
     environment {
         DOCKER_CREDENTIALS_ID = 'dockerhub-credentials' // Substitua pelo ID das suas credenciais Docker
-        DOCKER_IMAGE = 'luis01filipe/olamundo-flask' // Substitua pelo seu usuário/nome da imagem Docker
-        KUBE_CONFIG_PATH = 'C:/Programas/Jenkins/.kube/config' // Substitua pelo caminho real do seu kubeconfig
+        DOCKER_IMAGE = 'luis01filipe/olamundo-flask' // Seu usuário/nome da imagem Docker
+        KUBE_CONFIG_PATH = 'C:/Programas/Jenkins/.kube/config' // Caminho para o kubeconfig no servidor Jenkins
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/Luis2001Goncalves/Projeto.git' // Substitua pelo URL do seu repositório Git
+                git branch: 'main', url: 'https://github.com/Luis2001Goncalves/Projeto.git'
             }
         }
         stage('Build Docker Image') {
