@@ -1,41 +1,36 @@
 pipeline {
     agent any
-
     environment {
-        DOCKER_CREDENTIALS_ID = 'dockerhub-credentials' // Certifique-se de que este ID está correto
-        DOCKER_IMAGE = 'luis01filipe/olamundo-flask' // Seu usuário/nome da imagem Docker
-        KUBE_CONFIG_PATH = 'C:/Programas/Jenkins/.kube/config' // Caminho para o kubeconfig no servidor Jenkins
+        DOCKER_CREDENTIALS_ID = 'dockerhub-credentials' // Credenciais do Docker
+        DOCKER_IMAGE = 'luis01filipe/olamundo-flask' // Nome da imagem Docker
+        KUBE_CONFIG_PATH = 'C:\\Users\\user\\.kube\\config' // Caminho do kubeconfig no Windows
     }
-
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/Luis2001Goncalves/Projeto.git'
+                git 'https://github.com/Luis2001Goncalves/Projeto.git'
             }
         }
         stage('Build Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build("${DOCKER_IMAGE}")
+                    bat 'docker build -t luis01filipe/olamundo-flask:latest .'
                 }
             }
         }
         stage('Push Docker Image') {
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', "${DOCKER_CREDENTIALS_ID}") {
-                        dockerImage.push("${env.BUILD_NUMBER}")
-                        dockerImage.push("latest")
+                    docker.withRegistry('', DOCKER_CREDENTIALS_ID) {
+                        bat 'docker push luis01filipe/olamundo-flask:latest'
                     }
                 }
             }
         }
         stage('Deploy to Kubernetes') {
             steps {
-                script {
-                    withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
-                        bat 'kubectl apply -f k8s-deployment.yaml'
-                    }
+                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                    bat 'kubectl apply -f k8s-deployment.yaml'
                 }
             }
         }
