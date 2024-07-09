@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: olamundo-deployment
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: olamundo
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: olamundo
-        image: usuario/olamundo-flask:latest
+        image: luis01filipe/olamundo-flask:latest
         ports:
         - containerPort: 5000
 ---
@@ -23,9 +23,11 @@ kind: Service
 metadata:
   name: olamundo-service
 spec:
-  type: LoadBalancer
-  ports:
-  - port: 80
-    targetPort: 5000
+  type: NodePort
   selector:
     app: olamundo
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 5000
+    nodePort: 30001 # Escolha uma porta entre 30000-32767
