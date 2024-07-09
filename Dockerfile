@@ -1,20 +1,17 @@
-# Usar uma imagem base do Python
+# Use uma imagem base do Python
 FROM python:3.9
 
-# Definir o diretório de trabalho
+# Defina o diretório de trabalho no contêiner
 WORKDIR /app
 
-# Copiar os arquivos de requisitos
-COPY requirements.txt requirements.txt
+# Copie o arquivo requirements.txt para o diretório de trabalho
+COPY requirements.txt .
 
-# Instalar as dependências
+# Instale as dependências necessárias
 RUN pip install -r requirements.txt
 
-# Copiar o resto dos arquivos da aplicação
+# Copie todo o conteúdo do diretório atual para o diretório de trabalho no contêiner
 COPY . .
 
-# Expor a porta da aplicação
-EXPOSE 5000
-
-# Comando para iniciar a aplicação
+# Comando para rodar a aplicação
 CMD ["python", "app.py"]
