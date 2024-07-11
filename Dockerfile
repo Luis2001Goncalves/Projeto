@@ -1,25 +1,21 @@
-# Use uma imagem base do Python
+# Dockerfile
 FROM python:3.9
 
-# Adiciona um usuário não-root
+# Adiciona um usuário não root
 RUN adduser --disabled-password --gecos '' appuser
-USER appuser
 
-# Defina o diretório de trabalho no contêiner
+# Define o diretório de trabalho
 WORKDIR /app
 
-# Copie o arquivo requirements.txt para o diretório de trabalho
+# Copia o arquivo de requisitos e instala as dependências
 COPY requirements.txt .
-
-# Instale as dependências necessárias
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copie todo o conteúdo do diretório atual para o diretório de trabalho no contêiner
+# Copia o código da aplicação para o contêiner
 COPY . .
 
 # Adiciona uma etapa de linting
 RUN pip install --user flake8
-ENV PATH="/home/appuser/.local/bin:$PATH"
 RUN flake8 app.py
 
 # Comando para rodar a aplicação
