@@ -2,9 +2,10 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_CREDENTIALS_ID = 'dockerhub-credentials'
-        DOCKER_IMAGE = 'luis01filipe/olamundo-flask'
-        KUBE_CONFIG_PATH = 'C:/Programas/Jenkins/.kube/config'
+        DOCKER_CREDENTIALS_ID = 'dockerhub-credentials' // Certifique-se de que este ID está correto
+        DOCKER_IMAGE = 'luis01filipe/olamundo-flask' // Seu usuário/nome da imagem Docker
+        KUBE_CONFIG_PATH = 'C:/Programas/Jenkins/.kube/config' // Caminho para o kubeconfig no servidor Jenkins
+        PATH = "${env.PATH};C:\\kubectl" // Adicionando o caminho do kubectl ao PATH
     }
 
     stages {
@@ -34,7 +35,7 @@ pipeline {
             steps {
                 script {
                     withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
-                        bat 'kubectl apply --validate=false -f k8s-deployment.yaml'
+                        bat 'kubectl apply -f k8s-deployment.yaml --validate=false'
                     }
                 }
             }
