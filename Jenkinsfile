@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_CREDENTIALS_ID = 'dockerhub-credentials'
         DOCKER_IMAGE = 'luis01filipe/olamundo-flask'
-        KUBE_CONFIG_PATH = 'C:\\Users\\user\\.kube\\config' // Corrigido o caminho
+        KUBE_CONFIG_PATH = 'C:\\Users\\user\\.kube\\config'
     }
 
     stages {
@@ -49,18 +49,14 @@ pipeline {
         stage('Test Kubernetes Connectivity') {
             steps {
                 script {
-                    withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
-                        bat 'kubectl get nodes --kubeconfig=%KUBECONFIG%'
-                    }
+                    bat "kubectl get nodes --kubeconfig=${KUBE_CONFIG_PATH}"
                 }
             }
         }
         stage('Deploy to Kubernetes') {
             steps {
                 script {
-                    withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
-                        bat 'kubectl apply --validate=false -f k8s-deployment.yaml --kubeconfig=%KUBECONFIG%'
-                    }
+                    bat "kubectl apply --validate=false -f k8s-deployment.yaml --kubeconfig=${KUBE_CONFIG_PATH}"
                 }
             }
         }
