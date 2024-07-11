@@ -5,6 +5,8 @@ pipeline {
         DOCKER_CREDENTIALS_ID = 'dockerhub-credentials' // Certifique-se de que este ID está correto
         DOCKER_IMAGE = 'luis01filipe/olamundo-flask' // Seu usuário/nome da imagem Docker
         KUBE_CONFIG_PATH = 'C:/Programas/Jenkins/.kube/config' // Caminho para o kubeconfig no servidor Jenkins
+        PYTHON_PATH = 'C:/Users/user/AppData/Local/Programs/Python/Python312'
+        PIP_PATH = 'C:/Users/user/AppData/Local/Programs/Python/Python312/Scripts'
     }
 
     stages {
@@ -15,12 +17,18 @@ pipeline {
         }
         stage('Install Dependencies') {
             steps {
-                bat 'pip install -r requirements.txt'
+                bat '''
+                set PATH=%PYTHON_PATH%;%PIP_PATH%;%PATH%
+                pip install -r requirements.txt
+                '''
             }
         }
         stage('Lint') {
             steps {
-                bat 'flake8 app.py'
+                bat '''
+                set PATH=%PYTHON_PATH%;%PIP_PATH%;%PATH%
+                flake8 app.py
+                '''
             }
         }
         stage('Build Docker Image') {
