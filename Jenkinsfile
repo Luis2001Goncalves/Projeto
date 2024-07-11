@@ -13,6 +13,11 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/Luis2001Goncalves/Projeto.git'
             }
         }
+        stage('Install Dependencies') {
+            steps {
+                bat 'pip install -r requirements.txt'
+            }
+        }
         stage('Lint') {
             steps {
                 bat 'flake8 app.py'
