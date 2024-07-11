@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_CREDENTIALS_ID = 'dockerhub-credentials'
         DOCKER_IMAGE = 'luis01filipe/olamundo-flask'
-        KUBE_CONFIG_PATH = 'C:/Programas/Jenkins/.kube/config'
+        KUBE_CONFIG_PATH = 'C:\Users\user\.kube\config' 
     }
 
     stages {
@@ -16,7 +16,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 bat '''
-                set PATH=%PYTHON_PATH%;%PIP_PATH%;%PATH%
+                set PATH=C:\\Users\\user\\AppData\\Local\\Programs\\Python\\Python312;C:\\Users\\user\\AppData\\Local\\Programs\\Python\\Python312\\Scripts;%PATH%
                 pip install -r requirements.txt
                 '''
             }
@@ -24,7 +24,7 @@ pipeline {
         stage('Lint') {
             steps {
                 bat '''
-                set PATH=%PYTHON_PATH%;%PIP_PATH%;%PATH%
+                set PATH=C:\\Users\\user\\AppData\\Local\\Programs\\Python\\Python312;C:\\Users\\user\\AppData\\Local\\Programs\\Python\\Python312\\Scripts;%PATH%
                 flake8 app.py
                 '''
             }
