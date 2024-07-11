@@ -18,7 +18,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Adiciona uma etapa de linting
-RUN pip install flake8
+RUN pip install --user flake8
+ENV PATH="/home/appuser/.local/bin:$PATH"
 RUN flake8 app.py
 
 # Comando para rodar a aplicação
