@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_CREDENTIALS_ID = 'dockerhub-credentials'
         DOCKER_IMAGE = 'luis01filipe/olamundo-flask'
-        KUBE_CONFIG_PATH = 'C:\Users\user\.kube\config' 
+        KUBE_CONFIG_PATH = 'C:\\Users\\user\\.kube\\config' // Corrigido o caminho
     }
 
     stages {
