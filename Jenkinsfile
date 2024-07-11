@@ -17,7 +17,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build("${DOCKER_IMAGE}")
+                    bat 'docker build -t luis01filipe/olamundo-flask .'
                 }
             }
         }
@@ -25,8 +25,8 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', "${DOCKER_CREDENTIALS_ID}") {
-                        dockerImage.push("${env.BUILD_NUMBER}")
-                        dockerImage.push("latest")
+                        bat 'docker push luis01filipe/olamundo-flask:${env.BUILD_NUMBER}'
+                        bat 'docker push luis01filipe/olamundo-flask:latest'
                     }
                 }
             }
