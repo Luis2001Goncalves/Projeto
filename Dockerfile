@@ -1,6 +1,10 @@
 # Use uma imagem base do Python
 FROM python:3.9
 
+# Adiciona um usuário não-root
+RUN adduser --disabled-password --gecos '' appuser
+USER appuser
+
 # Defina o diretório de trabalho no contêiner
 WORKDIR /app
 
@@ -8,10 +12,14 @@ WORKDIR /app
 COPY requirements.txt .
 
 # Instale as dependências necessárias
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copie todo o conteúdo do diretório atual para o diretório de trabalho no contêiner
 COPY . .
+
+# Adiciona uma etapa de linting
+RUN pip install flake8
+RUN flake8 app.py
 
 # Comando para rodar a aplicação
 CMD ["python", "app.py"]
